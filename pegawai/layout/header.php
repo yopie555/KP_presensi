@@ -177,7 +177,7 @@
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             <a href="#" class="dropdown-item">Profile</a>
                             <a href="./profile.html" class="dropdown-item">Ubah Password</a>
-                            <a href="#" class="dropdown-item">Logout</a>
+                            <a href="<?= base_url('auth/logout.php') ?>" class="dropdown-item">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -234,7 +234,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./form-elements.html">
+                                <a class="nav-link" href="<?= base_url('auth/logout.php') ?>">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />

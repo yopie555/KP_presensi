@@ -3,12 +3,10 @@
     if(!isset($_SESSION['login'])){
         header('Location: ../../auth/login.php?pesan=belum_login');
         exit();
-    }else{
-        if($_SESSION['role'] == 'admin'){
+    }else if($_SESSION['role'] != 'admin'){
             header('Location: ../../auth/login.php?pesan=tolak_akses');
             exit();
         }
-    } 
 
 include('../../admin/layout/header.php') ?>
 <!-- Page body -->

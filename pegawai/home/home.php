@@ -5,7 +5,7 @@ if (!isset($_SESSION['login'])) {
     header('Location: ../../auth/login.php?pesan=belum_login');
     exit();
 } else {
-    if ($_SESSION['role'] == 'pegawai') {  
+    if ($_SESSION['role'] != 'pegawai') {  
         header('Location: ../../auth/login.php?pesan=tolak_akses');
         exit();
     }

@@ -9,34 +9,64 @@ if (isset($_POST['login'])) {
   $password = $_POST['password'];
 
   $result = mysqli_query($connection, "SELECT * FROM users JOIN pegawai ON users.id_pegawai = pegawai.id WHERE username = '$username'");
-  if (mysqli_num_rows($result) === 1) {
-    $row = mysqli_fetch_assoc($result);
+  // if (mysqli_num_rows($result) === 1) {
+  //   $row = mysqli_fetch_assoc($result);
 
-    if (password_verify($password, $row['password'])) {
-      if($row['status'] == 'Aktif'){
+  //   if (password_verify($password, $row['password'])) {
+  //     if($row['status'] == 'Aktif'){
 
-        $_SESSION['login'] = true;
-        $_SESSION['id'] = $row['id'];
-        $_SESSION['role'] = $row['role'];
-        $_SESSION['nama'] = $row['nama'];
-        $_SESSION['nip'] = $row['nip'];
-        $_SESSION['jabatan'] = $row['jabatan'];
-        $_SESSION['lokasi_presensi'] = $row['lokasi_presensi'];
+  //       $_SESSION['login'] = true;
+  //       $_SESSION['id'] = $row['id'];
+  //       $_SESSION['role'] = $row['role'];
+  //       $_SESSION['nama'] = $row['nama'];
+  //       $_SESSION['nip'] = $row['nip'];
+  //       $_SESSION['jabatan'] = $row['jabatan'];
+  //       $_SESSION['lokasi_presensi'] = $row['lokasi_presensi'];
 
-        if($row['role'] === 'admin'){
-          header('Location: ../admin/home/home.php');
-          exit();
+  //       if($row['role'] === 'admin'){
+  //         header('Location: ../admin/home/home.php');
+  //         exit();
+  //       }else{
+  //         header('Location: ../pegawai/home/home.php');
+  //         exit();
+  //       }
+  //     }else{
+  //       $_SESSION['gagal'] = "Akun Anda belum aktif"; 
+  //     }
+  //   } else {
+  //     $_SESSION['gagal'] = "password salah, silahkan coba lagi";
+  //   }
+  // } else {
+  //   $_SESSION['gagal'] = "username salah, silahkan coba lagi";
+  // }
+
+  if(mysqli_num_rows($result) === 1){
+      $row = mysqli_fetch_assoc($result);
+
+      if(password_verify($password,$row['password'])){
+        if($row['status'] == 'Aktif'){
+          $_SESSION['login'] = true;
+          $_SESSION['id'] = $row['id'];
+          $_SESSION['role'] = $row['role'];
+          $_SESSION['nama'] = $row['nama'];
+          $_SESSION['nip'] = $row['nip'];
+          $_SESSION['jabatan'] = $row['jabatan'];
+          $_SESSION['lokasi_presensi'] = $row['lokasi_presensi'];
+
+          if($row['role'] === 'admin'){
+            header('Location: ../admin/home/home.php');
+            exit();
+          }else{
+            header('Location: ../pegawai/home/home.php');
+            exit();
+          }
         }else{
-          header('Location: ../pegawai/home/home.php');
-          exit();
+          $_SESSION['gagal'] = "Akun Anda belum aktif";
         }
       }else{
-        $_SESSION['gagal'] = "Akun Anda belum aktif"; 
+        $_SESSION['gagal'] = "password salah, silahkan coba lagi";
       }
-    } else {
-      $_SESSION['gagal'] = "password salah, silahkan coba lagi";
-    }
-  } else {
+  }else{
     $_SESSION['gagal'] = "username salah, silahkan coba lagi";
   }
 }
@@ -149,18 +179,17 @@ if (isset($_POST['login'])) {
     <!-- sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <?php if($_SESSION['gagal']) { ?>
+    <?php if (isset($_SESSION['gagal'])) : ?>
       <script>
         Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "<?= $_SESSION['gagal']; ?>",
-        });
+          icon: 'error',
+          title: 'Oops...',
+          text: '<?= $_SESSION['gagal'] ?>',
+        })
       </script>
-
       <?php unset($_SESSION['gagal']); ?>
+    <?php endif; ?>
 
-    <?php } ?>
 </body>
 
 </html>
