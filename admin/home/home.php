@@ -8,6 +8,7 @@
             exit();
         }
 
+$judul_halaman = "Home";
 include('../../admin/layout/header.php') ?>
 <!-- Page body -->
 <div class="page-body">

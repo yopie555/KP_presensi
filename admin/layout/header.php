@@ -1,4 +1,7 @@
-<?php require_once('../../config.php') ?>
+<?php 
+global $judul_halaman;
+require_once('../../config.php') 
+?>
 
 <!doctype html>
 <!--
@@ -317,7 +320,7 @@
                             <!-- Page pre-title -->
 
                             <h2 class="page-title">
-                                Dashboard
+                                <?= $judul_halaman ?>
                             </h2>
                         </div>
 
