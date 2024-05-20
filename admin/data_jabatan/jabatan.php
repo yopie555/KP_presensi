@@ -42,7 +42,7 @@ $result = mysqli_query($connection, "SELECT * FROM jabatan ORDER BY id DESC") or
                             <td><?= $jabatan['jabatan'] ?></td>
                             <td class="text-center">
                                 <a href="<?= base_url('admin/data_jabatan/edit.php?id=' . $jabatan['id']) ?>" class="badge bg-primary badge-pill">Edit</a>
-                                <a href="<?= base_url('admin/data_jabatan/hapus.php?id=' . $jabatan['id']) ?>" class="badge bg-danger badge-pill">Hapus</a>
+                                <a href="<?= base_url('admin/data_jabatan/hapus.php?id=' . $jabatan['id']) ?>" class="badge bg-danger badge-pill tombol-hapus">Hapus</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>

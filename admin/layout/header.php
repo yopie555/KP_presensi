@@ -194,7 +194,7 @@ require_once('../../config.php')
                     <div class="container-xl">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="./">
+                                <a class="nav-link" href="<?= base_url('admin/home/home.php') ?>">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -209,7 +209,7 @@ require_once('../../config.php')
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./">
+                                <a class="nav-link" href="<?= base_url('admin/data_pegawai/pegawai.php') ?>">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -241,10 +241,10 @@ require_once('../../config.php')
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="./accordion.html">
+                                            <a class="dropdown-item" href="<?= base_url('admin/data_jabatan/jabatan.php') ?>">
                                                 Jabatan
                                             </a>
-                                            <a class="dropdown-item" href="./blank.html">
+                                            <a class="dropdown-item" href="<?= base_url('admin/data_lokasi_presensi/lokasi_presensi.php') ?>">
                                                 Lokasi Presensi
                                             </a>
                                         </div>
@@ -268,10 +268,10 @@ require_once('../../config.php')
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="./accordion.html">
+                                            <a class="dropdown-item" href="<?= base_url('admin/rekap_presensi/rekap_harian.php') ?>">
                                                 Rekap Harian
                                             </a>
-                                            <a class="dropdown-item" href="./blank.html">
+                                            <a class="dropdown-item" href="<?= base_url('admin/rekap_presensi/rekap_bulanan.php') ?>">
                                                 Rekap Bulanan
                                             </a>
                                         </div>
@@ -279,7 +279,7 @@ require_once('../../config.php')
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./form-elements.html">
+                                <a class="nav-link" href="<?= base_url('admin/data_ketidakhadiran/ketidakhadiran.php') ?>">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clipboard-x" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
