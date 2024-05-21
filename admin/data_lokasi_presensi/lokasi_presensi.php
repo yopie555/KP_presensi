@@ -47,9 +47,9 @@ $result = mysqli_query($connection, "SELECT * FROM lokasi_presensi ORDER BY id D
                         <td><?= $lokasi['longitude'] . ' / ' . $lokasi['latitude'] ?></td>
                         <td><?= $lokasi['radius'] ?></td>
                         <td class="text-center">
-                            <a href="<?= base_url('admin/data_lokasi_presensi.detail.php' . $lokasi['id']) ?>" class="badge badge-pill bg-primary">Detail</a>
-                            <a href="<?= base_url('admin/data_lokasi_presensi.edit.php' . $lokasi['id']) ?>" class="badge badge-pill bg-primary">Edit</a>
-                            <a href="<?= base_url('admin/data_lokasi_presensi.hapus.php' . $lokasi['id']) ?>" class="badge badge-pill bg-danger">Hapus</a>
+                            <a href="<?= base_url('admin/data_lokasi_presensi/detail.php?id=' . $lokasi['id']) ?>" class="badge badge-pill bg-primary">Detail</a>
+                            <a href="<?= base_url('admin/data_lokasi_presensi/edit.php?id=' . $lokasi['id']) ?>" class="badge badge-pill bg-primary">Edit</a>
+                            <a href="<?= base_url('admin/data_lokasi_presensi/hapus.php?id=' . $lokasi['id']) ?>" class="badge badge-pill bg-danger tombol-hapus">Hapus</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
