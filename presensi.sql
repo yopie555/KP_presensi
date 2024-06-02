@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 17, 2024 at 04:35 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 7.4.29
+-- Host: localhost
+-- Generation Time: Jun 02, 2024 at 03:20 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,44 @@ SET time_zone = "+00:00";
 CREATE TABLE `jabatan` (
   `id` int(11) NOT NULL,
   `jabatan` varchar(225) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `jabatan`
+--
+
+INSERT INTO `jabatan` (`id`, `jabatan`) VALUES
+(7, 'IT Support 1'),
+(8, 'bendahara'),
+(9, 'Project Owner');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lokasi_presensi`
+--
+
+CREATE TABLE `lokasi_presensi` (
+  `id` int(11) NOT NULL,
+  `nama_lokasi` varchar(255) NOT NULL,
+  `alamat_lokasi` varchar(255) NOT NULL,
+  `tipe_lokasi` varchar(255) NOT NULL,
+  `latitude` varchar(50) NOT NULL,
+  `longitude` varchar(50) NOT NULL,
+  `radius` int(11) NOT NULL,
+  `zona_waktu` varchar(4) NOT NULL,
+  `jam_masuk` time NOT NULL,
+  `jam_pulang` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lokasi_presensi`
+--
+
+INSERT INTO `lokasi_presensi` (`id`, `nama_lokasi`, `alamat_lokasi`, `tipe_lokasi`, `latitude`, `longitude`, `radius`, `zona_waktu`, `jam_masuk`, `jam_pulang`) VALUES
+(1, 'Kantor Pusat', 'Jl. KKB pusat', 'Kantor Pusat', '121.23422424', '232.24214124', 100, 'WIB', '07:30:00', '17:30:00'),
+(2, 'Kantor Pusat', 'jl. terus jadian kaga', 'Pusat', '-6.0983937', '123.03837389', 100, 'WIB', '08:00:00', '17:30:00'),
+(3, 'Kantor Pusat', 'jl. terus jadian kaga', 'Pusat', '1.016767', '104.4700119', 100, 'WIB', '08:00:00', '17:30:00');
 
 -- --------------------------------------------------------
 
@@ -48,7 +85,7 @@ CREATE TABLE `pegawai` (
   `jabatan` varchar(50) NOT NULL,
   `lokasi_presensi` varchar(225) NOT NULL,
   `foto` varchar(225) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `pegawai`
@@ -56,7 +93,9 @@ CREATE TABLE `pegawai` (
 
 INSERT INTO `pegawai` (`id`, `nip`, `nama`, `jenis_kelamin`, `alamat`, `no_handphone`, `jabatan`, `lokasi_presensi`, `foto`) VALUES
 (1, 'PEG-0001', 'elsa', 'perempuan', 'jalan. kemana ya', '0812121212', 'admin', 'kantor pusat', 'elsa.jpg'),
-(2, 'PEG-0002', 'budi', 'laki-laki', 'jalan. in aja dulu', '080989999', 'kasat', 'kantor pusat', 'budi.jpg');
+(2, 'PEG-0002', 'budi', 'laki-laki', 'jalan. in aja dulu', '080989999', 'kasat', 'kantor pusat', 'budi.jpg'),
+(21, 'PEG-0003', 'Yopy Tri Buana', 'Laki-laki', 'jl.situ aja', '12313413', 'bendahara', 'Kantor Pusat', '_cf5a053d-d5ff-44d8-a245-f245493566ea.jpeg'),
+(22, 'PEG-0004', 'asda', 'Laki-laki', 'qdqwd', '09028208', 'Project Owner', 'Kantor Pusat', '_cf5a053d-d5ff-44d8-a245-f245493566ea.jpeg');
 
 -- --------------------------------------------------------
 
@@ -71,7 +110,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `status` varchar(20) NOT NULL,
   `role` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -79,7 +118,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `id_pegawai`, `username`, `password`, `status`, `role`) VALUES
 (1, 1, 'elsa', '$2y$10$ftITlbJbNCyen7Lsl19oW.di5tvzt/EBUg4bSAwC0k22GrOrriIh2', 'Aktif', 'admin'),
-(2, 2, 'budi', '$2y$10$ftITlbJbNCyen7Lsl19oW.di5tvzt/EBUg4bSAwC0k22GrOrriIh2', 'Aktif', 'pegawai');
+(2, 2, 'budi', '$2y$10$ftITlbJbNCyen7Lsl19oW.di5tvzt/EBUg4bSAwC0k22GrOrriIh2', 'Aktif', 'pegawai'),
+(21, 21, 'qwe', '$2y$10$nNO4fGSARD3g7mx0QAZ8h.wmneDzza2zaK9fa6c/kLPEYdWsWeuSi', 'aktif', 'admin'),
+(22, 22, 'admin', '$2y$10$AQLdQ9LoNMzPH9VuPIRP5OSbH.D.jfTNF8E9SKnnDBxq4wl4eu8ou', 'aktif', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -89,6 +130,12 @@ INSERT INTO `users` (`id`, `id_pegawai`, `username`, `password`, `status`, `role
 -- Indexes for table `jabatan`
 --
 ALTER TABLE `jabatan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lokasi_presensi`
+--
+ALTER TABLE `lokasi_presensi`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -112,19 +159,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `jabatan`
 --
 ALTER TABLE `jabatan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `lokasi_presensi`
+--
+ALTER TABLE `lokasi_presensi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pegawai`
 --
 ALTER TABLE `pegawai`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
