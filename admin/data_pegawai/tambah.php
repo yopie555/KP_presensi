@@ -14,7 +14,22 @@ include('../../admin/layout/header.php');
 require_once('../../config.php');
 
 if (isset($_POST['submit'])) {
-    $nip = htmlspecialchars($_POST['nip']);
+
+    $ambil_nip = mysqli_query($connection, "SELECT nip FROM pegawai ORDER BY nip DESC limit 1");
+
+    if (mysqli_num_rows($ambil_nip) > 0) {
+        $row = mysqli_fetch_assoc($ambil_nip);
+        $nip_db = $row['nip'];
+        $nip_db = explode('-', $nip_db);
+        $no_baru = (int)$nip_db[1] + 1;
+        $nip_baru = 'PEG-' . str_pad($no_baru, 4, '0', STR_PAD_LEFT);
+        // $no_baru = (int)$nip_db[1] + 1;
+        // $nip_baru = 'PEG-' . str_pad($no_baru, 4, '0', STR_PAD_LEFT);
+    } else {
+        $nip_baru = 'PEG-0001';
+    }
+
+    $nip = $nip_baru;
     $nama = htmlspecialchars($_POST['nama']);
     $jenis_kelamin = htmlspecialchars($_POST['jenis_kelamin']);
     $alamat = htmlspecialchars($_POST['alamat']);
@@ -39,12 +54,9 @@ if (isset($_POST['submit'])) {
         move_uploaded_file($file_temp, $file_direrktori);
     }
 
- 
+
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($nip)) {
-            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> NIP lokasi wajib di isi";
-        }
         if (empty($nama)) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Nama lokasi wajib di isi";
         }
@@ -63,9 +75,6 @@ if (isset($_POST['submit'])) {
         if (empty($username)) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Username wajib di isi";
         }
-        if (empty($password)) {
-            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password wajib di isi";
-        }
         if (empty($role)) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Role wajib di isi";
         }
@@ -75,6 +84,19 @@ if (isset($_POST['submit'])) {
         if (empty($lokasi_presensi)) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Lokasi presensi wajib di isi";
         }
+        if (empty($password)) {
+            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password wajib di isi";
+        }
+        if (empty($_POST['password'] !== $_POST['ulangi_password'])) {
+            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password tidak cocok";
+        }
+        if (!in_array(strtolower($ambil_ekstensi), $ekstensi_diizinkan)) {
+            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Hanya file jpg, jpeg, png yang diizinkan";
+        }
+        if ($ukuran_file > $max_ukuran) {
+            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Ukuran file terlalu besar. Max 10MB";
+        }
+    
 
         if (!empty($pesan_kesalahan)) {
             $_SESSION['validasi'] = implode("<br", $pesan_kesalahan);
@@ -100,25 +122,11 @@ if (isset($_POST['submit'])) {
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <?php
-                            $ambil_nip = mysqli_query($connection, "SELECT nip FROM pegawai ORDER BY nip DESC limit 1");
 
-                            if (mysqli_num_rows($ambil_nip) > 0) {
-                                $row = mysqli_fetch_assoc($ambil_nip);
-                                $nip_db = $row['nip'];
-                                $nip_db = explode('-', $nip_db);
-                                $no_baru = (int)$nip_db[1] + 1;
-                                $nip_baru = 'PEG-' . str_pad($no_baru, 4, '0', STR_PAD_LEFT);
-                                // $no_baru = (int)$nip_db[1] + 1;
-                                // $nip_baru = 'PEG-' . str_pad($no_baru, 4, '0', STR_PAD_LEFT);
-                            } else {
-                                $nip_baru = 'PEG-0001';
-                            }
-                            ?>
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label for="">NIP</label>
-                                <input type="text" class="form-control" name="nip" value="<?= $nip_baru ?>">
-                            </div>
+                                <input type="text" class="form-control" name="nip" value="<?= $nip_baru ?>" readonly>
+                            </div> -->
                             <div class="mb-3">
                                 <label for="">Nama</label>
                                 <input type="text" class="form-control" name="nama" value="<?php if (isset($_POST['nama'])) echo $_POST['nama'] ?>">
