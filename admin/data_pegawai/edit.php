@@ -9,38 +9,31 @@ if (!isset($_SESSION['login'])) {
     exit();
 }
 
-$judul_halaman = "Tambah Pegawai";
+$judul_halaman = "Edit Pegawai";
 include('../../admin/layout/header.php');
 require_once('../../config.php');
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['edit'])) {
 
-    $ambil_nip = mysqli_query($connection, "SELECT nip FROM pegawai ORDER BY nip DESC limit 1");
-
-    if (mysqli_num_rows($ambil_nip) > 0) {
-        $row = mysqli_fetch_assoc($ambil_nip);
-        $nip_db = $row['nip'];
-        $nip_db = explode('-', $nip_db);
-        $no_baru = (int)$nip_db[1] + 1;
-        $nip_baru = 'PEG-' . str_pad($no_baru, 4, '0', STR_PAD_LEFT);
-        // $no_baru = (int)$nip_db[1] + 1;
-        // $nip_baru = 'PEG-' . str_pad($no_baru, 4, '0', STR_PAD_LEFT);
-    } else {
-        $nip_baru = 'PEG-0001';
-    }
-
-    $nip = $nip_baru;
+    $id = $_POST['id'];
     $nama = htmlspecialchars($_POST['nama']);
     $jenis_kelamin = htmlspecialchars($_POST['jenis_kelamin']);
     $alamat = htmlspecialchars($_POST['alamat']);
     $no_handphone = htmlspecialchars($_POST['no_handphone']);
     $jabatan = htmlspecialchars($_POST['jabatan']);
     $username = htmlspecialchars($_POST['username']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $role = htmlspecialchars($_POST['role']);
     $status = htmlspecialchars($_POST['status']);
     $lokasi_presensi = htmlspecialchars($_POST['lokasi_presensi']);
 
+    if(empty($_POST['password'])){
+        $password = $_POST['password_lama'];
+    }else{
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    }
+
+
+    
     if (isset($_FILES['foto'])) {
         $file = $_FILES['foto'];
         $nama_file = $file['name'];
@@ -102,7 +95,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['validasi'] = implode("<br", $pesan_kesalahan);
         } else {
 
-            $pegawai = mysqli_query($connection, "INSERT INTO pegawai (nip, nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto) VALUES ('$nip', '$nama', '$jenis_kelamin', '$alamat', '$no_handphone', '$jabatan', '$lokasi_presensi', '$file_name')");
+            $pegawai = mysqli_query($connection, "INSERT INTO pegawai ( nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto) VALUES ( '$nama', '$jenis_kelamin', '$alamat', '$no_handphone', '$jabatan', '$lokasi_presensi', '$file_name')");
             $id_pegawai = mysqli_insert_id($connection);
             $users = mysqli_query($connection, "INSERT INTO users (id_pegawai, username, password, status, role) VALUES ('$id_pegawai ','$username', '$password', '$status', '$role')");
 
@@ -174,9 +167,9 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                     <option value="">== Pilih Jabatan ==</option>
                                     <?php
                                     $ambil_jabatan = mysqli_query($connection, "SELECT * FROM jabatan ORDER BY jabatan ASC");
-                                    while ($jabatan = mysqli_fetch_assoc($ambil_jabatan)) {
-                                        $nama_jabatan = $jabatan['jabatan'];
-                                        if (isset($_POST['jabatan']) && $_POST['jabatan'] == $nama_jabatan) {
+                                    while ($row = mysqli_fetch_assoc($ambil_jabatan)) {
+                                        $nama_jabatan = $row['jabatan'];
+                                        if ($jabatan == $nama_jabatan) {
                                             echo '<option value="' . $nama_jabatan . '" selected = "selected">' . $nama_jabatan . '</option>';
                                         } else {
                                             echo '<option value="' . $nama_jabatan . '">' . $nama_jabatan . '</option>';
@@ -189,10 +182,10 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                 <label for="">Status</label>
                                 <select name="status" class="form-control">
                                     <option value="">== Pilih Status ==</option>
-                                    <option <?php if (isset($_POST['status']) && $_POST['status'] == 'aktif') {
+                                    <option <?php if ($status == 'aktif') {
                                                 echo 'selected';
                                             } ?> value="aktif">Aktif</option>
-                                    <option <?php if (isset($_POST['status']) && $_POST['status'] == 'tidak_aktif') {
+                                    <option <?php if ($status == 'tidak_aktif') {
                                                 echo 'selected';
                                             } ?> value="tidak_aktif">Tidak Aktif</option>
                                 </select>
@@ -209,10 +202,11 @@ while ($pegawai = mysqli_fetch_array($result)) {
                         <div class="card-body">
                             <div class="mb-3">
                                 <label for="">Username</label>
-                                <input type="text" class="form-control" name="username" value="<?php if (isset($_POST['username'])) echo $_POST['username'] ?>">
+                                <input type="text" class="form-control" name="username" value="<?= $username ?>">
                             </div>
                             <div class="mb-3">
                                 <label for="">Password</label>
+                                <input type="hidden" value="<?= $password ?>" name="password_lama">
                                 <input type="password" class="form-control" name="password">
                             </div>
                             <div class="mb-3">
@@ -223,10 +217,10 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                 <label for="">Role</label>
                                 <select name="role" class="form-control">
                                     <option value="">== Pilih Role ==</option>
-                                    <option <?php if (isset($_POST['role']) && $_POST['role'] == 'admin') {
+                                    <option <?php if ($role == 'admin') {
                                                 echo 'selected';
                                             } ?> value="admin">Admin</option>
-                                    <option <?php if (isset($_POST['role']) && $_POST['role'] == 'pegawai') {
+                                    <option <?php if ($role == 'pegawai') {
                                                 echo 'selected';
                                             } ?> value="pegawai">Pegawai</option>
                                 </select>
@@ -239,7 +233,7 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                     $ambil_lok_presensi = mysqli_query($connection, "SELECT * FROM lokasi_presensi ORDER BY nama_lokasi ASC");
                                     while ($lokasi = mysqli_fetch_assoc($ambil_lok_presensi)) {
                                         $nama_lokasi = $lokasi['nama_lokasi'];
-                                        if (isset($_POST['lokasi_presensi']) && $_POST['lokasi_presensi'] == $nama_lokasi) {
+                                        if ($lokasi_presensi == $nama_lokasi) {
                                             echo '<option value="' . $nama_lokasi . '" selected = "selected">' . $nama_lokasi . '</option>';
                                         } else {
                                             echo '<option value="' . $nama_lokasi . '">' . $nama_lokasi . '</option>';
@@ -250,9 +244,11 @@ while ($pegawai = mysqli_fetch_array($result)) {
                             </div>
                             <div class="mb-3">
                                 <label for="">Foto</label>
-                                <input type="file" class="form-control" name="foto">
+                                <input type="hidden" value="<?= $foto ?>" name="foto_lama">
+                                <input type="file" class="form-control" name="foto_baru">
                             </div>
-                            <button type="submit" class="btn btn-primary" name="submit">Simpan</button>
+                            <input type="hidden" value="<?= $id ?>" name="id">
+                            <button type="submit" class="btn btn-primary" name="edit">Update</button>
                         </div>
                     </div>
                 </div>
