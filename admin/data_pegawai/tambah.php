@@ -172,12 +172,12 @@ if (isset($_POST['submit'])) {
                                 <label for="">Status</label>
                                 <select name="status" class="form-control">
                                     <option value="">== Pilih Status ==</option>
-                                    <option <?php if (isset($_POST['status']) && $_POST['status'] == 'aktif') {
+                                    <option <?php if (isset($_POST['status']) && $_POST['status'] == 'Aktif') {
                                                 echo 'selected';
-                                            } ?> value="aktif">Aktif</option>
-                                    <option <?php if (isset($_POST['status']) && $_POST['status'] == 'tidak_aktif') {
+                                            } ?> value="Aktif">Aktif</option>
+                                    <option <?php if (isset($_POST['status']) && $_POST['status'] == 'Tidak Aktif') {
                                                 echo 'selected';
-                                            } ?> value="tidak_aktif">Tidak Aktif</option>
+                                            } ?> value="Tidak Aktif">Tidak Aktif</option>
                                 </select>
                             </div>
 

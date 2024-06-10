@@ -31,11 +31,12 @@ if (isset($_POST['edit'])) {
     }else{
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     }
-
-
-    
-    if (isset($_FILES['foto'])) {
-        $file = $_FILES['foto'];
+ 
+    if($_FILES['foto_baru']['error'] == 4){
+        $file_name = $_POST['foto_lama'];
+    }else{
+        if(isset($_FILES['foto_baru'])){
+        $file = $_FILES['foto_baru'];
         $nama_file = $file['name'];
         $file_temp = $file['tmp_name'];
         $ukuran_file = $file['size'];
@@ -45,8 +46,12 @@ if (isset($_POST['edit'])) {
         $max_ukuran = 10 * 1024 * 1024;
 
         move_uploaded_file($file_temp, $file_direrktori);
+        $file_name = $nama_file;
+        }
     }
 
+    
+  
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -80,26 +85,43 @@ if (isset($_POST['edit'])) {
         if (empty($password)) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password wajib di isi";
         }
-        if (empty($_POST['password'] !== $_POST['ulangi_password'])) {
+        // if (empty($_POST['password'] !== $_POST['ulangi_password'])) {
+        //     $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password tidak cocok";
+        // }
+        if($_POST['password'] !== $_POST['ulangi_password']){
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password tidak cocok";
         }
-        if (!in_array(strtolower($ambil_ekstensi), $ekstensi_diizinkan)) {
-            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Hanya file jpg, jpeg, png yang diizinkan";
+
+        if($_FILES['foto_baru']['error'] !== 4){
+            if (!in_array(strtolower($ambil_ekstensi), $ekstensi_diizinkan)) {
+                $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Hanya file jpg, jpeg, png yang diizinkan";
+            }
+            if ($ukuran_file > $max_ukuran) {
+                $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Ukuran file terlalu besar. Max 10MB";
+            }
         }
-        if ($ukuran_file > $max_ukuran) {
-            $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Ukuran file terlalu besar. Max 10MB";
-        }
+
     
 
         if (!empty($pesan_kesalahan)) {
             $_SESSION['validasi'] = implode("<br", $pesan_kesalahan);
         } else {
 
-            $pegawai = mysqli_query($connection, "INSERT INTO pegawai ( nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto) VALUES ( '$nama', '$jenis_kelamin', '$alamat', '$no_handphone', '$jabatan', '$lokasi_presensi', '$file_name')");
-            $id_pegawai = mysqli_insert_id($connection);
-            $users = mysqli_query($connection, "INSERT INTO users (id_pegawai, username, password, status, role) VALUES ('$id_pegawai ','$username', '$password', '$status', '$role')");
+            $pegawai = mysqli_query($connection, "UPDATE pegawai SET 
+                nama = '$nama', 
+                jenis_kelamin = '$jenis_kelamin', 
+                alamat = '$alamat', 
+                no_handphone = '$no_handphone', 
+                jabatan = '$jabatan', 
+                lokasi_presensi = '$lokasi,
+                foto = '$file_name' WHERE id = $id");
+            $users = mysqli_query($connection, "UPDATE users SET 
+                username = '$username', 
+                password = '$password', 
+                role = '$role', 
+                status = '$status' WHERE id_pegawai = $id");
 
-            $_SESSION['berhasil'] = 'Data berhasil ditambahkan';
+            $_SESSION['berhasil'] = 'Data berhasil diupdate';
             header("Location: pegawai.php");
             exit();
         }
@@ -182,12 +204,12 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                 <label for="">Status</label>
                                 <select name="status" class="form-control">
                                     <option value="">== Pilih Status ==</option>
-                                    <option <?php if ($status == 'aktif') {
+                                    <option <?php if ($status == 'Aktif') {
                                                 echo 'selected';
-                                            } ?> value="aktif">Aktif</option>
-                                    <option <?php if ($status == 'tidak_aktif') {
+                                            } ?> value="Aktif">Aktif</option>
+                                    <option <?php if ($status == 'Tidak Aktif') {
                                                 echo 'selected';
-                                            } ?> value="tidak_aktif">Tidak Aktif</option>
+                                            } ?> value="Tidak Aktif">Tidak Aktif</option>
                                 </select>
                             </div>
 
@@ -206,7 +228,7 @@ while ($pegawai = mysqli_fetch_array($result)) {
                             </div>
                             <div class="mb-3">
                                 <label for="">Password</label>
-                                <input type="hidden" value="<?= $password ?>" name="password_lama">
+                                <input type="text" value="<?= $password ?>" name="password_lama">
                                 <input type="password" class="form-control" name="password">
                             </div>
                             <div class="mb-3">
