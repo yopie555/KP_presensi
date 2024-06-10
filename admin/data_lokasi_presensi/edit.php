@@ -54,7 +54,7 @@ if(isset($_POST['update'])) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Jam pulang wajib di isi";
         }
         if (!empty($pesan_kesalahan)) {
-            $_SESSION['validasi'] = implode("<br", $pesan_kesalahan);
+            $_SESSION['validasi'] = implode("<br>", $pesan_kesalahan);
         }else{
             // $result = mysqli_query($connection, "UPDATE lokasi_presensi SET jabatan = '$jabatan' WHERE id = $id");
             $query = "UPDATE lokasi_presensi SET 

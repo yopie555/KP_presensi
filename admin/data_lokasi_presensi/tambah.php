@@ -53,7 +53,7 @@ if (isset($_POST['submit'])) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Jam pulang wajib di isi";
         }
         if (!empty($pesan_kesalahan)) {
-            $_SESSION['validasi'] = implode("<br", $pesan_kesalahan);
+            $_SESSION['validasi'] = implode("<br>", $pesan_kesalahan);
         } else {
 
             $query = "INSERT INTO lokasi_presensi (nama_lokasi, alamat_lokasi, tipe_lokasi, latitude, longitude, radius, zona_waktu, jam_masuk, jam_pulang) VALUES ('$nama_lokasi', '$alamat_lokasi', '$tipe_lokasi', '$latitude', '$longitude', '$radius', '$zona_waktu', '$jam_masuk', '$jam_pulang')";

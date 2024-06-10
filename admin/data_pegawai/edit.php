@@ -32,21 +32,20 @@ if (isset($_POST['edit'])) {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     }
  
-    if($_FILES['foto_baru']['error'] == 4){
+    if($_FILES['foto_baru']['error'] === 4){
         $file_name = $_POST['foto_lama'];
     }else{
-        if(isset($_FILES['foto_baru'])){
-        $file = $_FILES['foto_baru'];
-        $nama_file = $file['name'];
-        $file_temp = $file['tmp_name'];
-        $ukuran_file = $file['size'];
-        $file_direrktori = '../../assets/img/foto_pegawai/' . $nama_file;
-        $ambil_ekstensi = pathinfo($nama_file, PATHINFO_EXTENSION);
-        $ekstensi_diizinkan = ['jpg', 'jpeg', 'png'];
-        $max_ukuran = 10 * 1024 * 1024;
-
-        move_uploaded_file($file_temp, $file_direrktori);
-        $file_name = $nama_file;
+        if (isset($_FILES['foto_baru'])) {
+            $file = $_FILES['foto_baru'];
+            $nama_file = $file['name'];
+            $file_temp = $file['tmp_name'];
+            $ukuran_file = $file['size'];
+            $file_direrktori = '../../assets/img/foto_pegawai/' . $nama_file;
+            $ambil_ekstensi = pathinfo($nama_file, PATHINFO_EXTENSION);
+            $ekstensi_diizinkan = ['jpg', 'jpeg', 'png'];
+            $max_ukuran = 10 * 1024 * 1024;
+    
+            move_uploaded_file($file_temp, $file_direrktori);
         }
     }
 
@@ -101,25 +100,22 @@ if (isset($_POST['edit'])) {
             }
         }
 
-    
-
         if (!empty($pesan_kesalahan)) {
-            $_SESSION['validasi'] = implode("<br", $pesan_kesalahan);
+            $_SESSION['validasi'] = implode("<br>", $pesan_kesalahan);
         } else {
-
             $pegawai = mysqli_query($connection, "UPDATE pegawai SET 
                 nama = '$nama', 
                 jenis_kelamin = '$jenis_kelamin', 
                 alamat = '$alamat', 
                 no_handphone = '$no_handphone', 
                 jabatan = '$jabatan', 
-                lokasi_presensi = '$lokasi,
-                foto = '$file_name' WHERE id = $id");
+                lokasi_presensi = '$lokasi_presensi',
+                foto = '$nama_file' WHERE id = '$id'");
             $users = mysqli_query($connection, "UPDATE users SET 
                 username = '$username', 
                 password = '$password', 
                 role = '$role', 
-                status = '$status' WHERE id_pegawai = $id");
+                status = '$status' WHERE id = '$id'");
 
             $_SESSION['berhasil'] = 'Data berhasil diupdate';
             header("Location: pegawai.php");
@@ -139,6 +135,7 @@ while ($pegawai = mysqli_fetch_array($result)) {
     $no_handphone = $pegawai['no_handphone'];
     $jabatan = $pegawai['jabatan'];
     $username = $pegawai['username'];
+    $password = $pegawai['password'];
     $role = $pegawai['role'];
     $status = $pegawai['status'];
     $lokasi_presensi = $pegawai['lokasi_presensi'];
@@ -154,11 +151,6 @@ while ($pegawai = mysqli_fetch_array($result)) {
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-
-                            <!-- <div class="mb-3">
-                                <label for="">NIP</label>
-                                <input type="text" class="form-control" name="nip" value="<?= $nip_baru ?>" readonly>
-                            </div> -->
                             <div class="mb-3">
                                 <label for="">Nama</label>
                                 <input type="text" class="form-control" name="nama" value="<?= $nama ?>">
@@ -228,7 +220,7 @@ while ($pegawai = mysqli_fetch_array($result)) {
                             </div>
                             <div class="mb-3">
                                 <label for="">Password</label>
-                                <input type="text" value="<?= $password ?>" name="password_lama">
+                                <input type="hidden" value="<?= $password ?>" name="password_lama">
                                 <input type="password" class="form-control" name="password">
                             </div>
                             <div class="mb-3">
@@ -239,12 +231,12 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                 <label for="">Role</label>
                                 <select name="role" class="form-control">
                                     <option value="">== Pilih Role ==</option>
-                                    <option <?php if ($role == 'admin') {
+                                    <option <?php if ($role == 'Admin') {
                                                 echo 'selected';
-                                            } ?> value="admin">Admin</option>
-                                    <option <?php if ($role == 'pegawai') {
+                                            } ?> value="Admin">Admin</option>
+                                    <option <?php if ($role == 'Pegawai') {
                                                 echo 'selected';
-                                            } ?> value="pegawai">Pegawai</option>
+                                            } ?> value="Pegawai">Pegawai</option>
                                 </select>
                             </div>
                             <div class="mb-3">

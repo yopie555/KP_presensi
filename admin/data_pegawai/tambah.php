@@ -87,7 +87,7 @@ if (isset($_POST['submit'])) {
         if (empty($password)) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password wajib di isi";
         }
-        if (empty($_POST['password'] !== $_POST['ulangi_password'])) {
+        if ($_POST['password'] !== $_POST['ulangi_password']) {
             $pesan_kesalahan[] = "<i class='fa-solid fa-check'></i> Password tidak cocok";
         }
         if (!in_array(strtolower($ambil_ekstensi), $ekstensi_diizinkan)) {
@@ -99,10 +99,10 @@ if (isset($_POST['submit'])) {
     
 
         if (!empty($pesan_kesalahan)) {
-            $_SESSION['validasi'] = implode("<br", $pesan_kesalahan);
+            $_SESSION['validasi'] = implode("<br>", $pesan_kesalahan);
         } else {
 
-            $pegawai = mysqli_query($connection, "INSERT INTO pegawai (nip, nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto) VALUES ('$nip', '$nama', '$jenis_kelamin', '$alamat', '$no_handphone', '$jabatan', '$lokasi_presensi', '$file_name')");
+            $pegawai = mysqli_query($connection, "INSERT INTO pegawai (nip, nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto) VALUES ('$nip', '$nama', '$jenis_kelamin', '$alamat', '$no_handphone', '$jabatan', '$lokasi_presensi', '$nama_file')");
             $id_pegawai = mysqli_insert_id($connection);
             $users = mysqli_query($connection, "INSERT INTO users (id_pegawai, username, password, status, role) VALUES ('$id_pegawai ','$username', '$password', '$status', '$role')");
 
@@ -206,12 +206,12 @@ if (isset($_POST['submit'])) {
                                 <label for="">Role</label>
                                 <select name="role" class="form-control">
                                     <option value="">== Pilih Role ==</option>
-                                    <option <?php if (isset($_POST['role']) && $_POST['role'] == 'admin') {
+                                    <option <?php if (isset($_POST['role']) && $_POST['role'] == 'Admin') {
                                                 echo 'selected';
-                                            } ?> value="admin">Admin</option>
-                                    <option <?php if (isset($_POST['role']) && $_POST['role'] == 'pegawai') {
+                                            } ?> value="Admin">Admin</option>
+                                    <option <?php if (isset($_POST['role']) && $_POST['role'] == 'Pegawai') {
                                                 echo 'selected';
-                                            } ?> value="pegawai">Pegawai</option>
+                                            } ?> value="Pegawai">Pegawai</option>
                                 </select>
                             </div>
                             <div class="mb-3">
