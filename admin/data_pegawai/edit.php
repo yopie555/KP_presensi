@@ -231,12 +231,12 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                 <label for="">Role</label>
                                 <select name="role" class="form-control">
                                     <option value="">== Pilih Role ==</option>
-                                    <option <?php if ($role == 'Admin') {
+                                    <option <?php if ($role == 'admin') {
                                                 echo 'selected';
-                                            } ?> value="Admin">Admin</option>
-                                    <option <?php if ($role == 'Pegawai') {
+                                            } ?> value="admin">Admin</option>
+                                    <option <?php if ($role == 'pegawai') {
                                                 echo 'selected';
-                                            } ?> value="Pegawai">Pegawai</option>
+                                            } ?> value="pegawai">Pegawai</option>
                                 </select>
                             </div>
                             <div class="mb-3">
