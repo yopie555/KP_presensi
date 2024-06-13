@@ -1,4 +1,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+
+<style>
+    #map {
+        height: 400px;
+    }
+</style>
 
 <?php
 ob_start();
@@ -54,7 +64,8 @@ if ($jarak_meter > $radius) { ?>
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d757.7629415686725!2d<?= $longitude_pegawai ?>!3d<?= $latitude_pegawai ?>!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1718203016609!5m2!1sid!2sid" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d757.7629415686725!2d<?= $longitude_pegawai ?>!3d<?= $latitude_pegawai ?>!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1718203016609!5m2!1sid!2sid" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+                            <div id="map"></div>
                         </div>
                     </div>
                 </div>
@@ -109,6 +120,27 @@ if ($jarak_meter > $radius) { ?>
                 );
             });
         });
+
+
+        //map leaflet js
+        let latitude_kantor = <?= $latitude_kantor ?>;
+        let longitude_kantor = <?= $longitude_kantor ?>;
+        let latitude_pegawai = <?= $latitude_pegawai ?>;
+        let longitude_pegawai = <?= $longitude_pegawai ?>;
+        let map = L.map('map').setView([latitude_kantor, longitude_kantor], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var marker = L.marker([latitude_kantor, longitude_kantor]).addTo(map);
+
+        var circle = L.circle([latitude_pegawai, longitude_kantor], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 500
+        }).addTo(map).bindPopup("Lokasi Anda saat ini").openPopup();
     </script>
     <!-- <a href="javascript:void(take_snapshot())">Take Snapshot</a> -->
 <?php } ?>
