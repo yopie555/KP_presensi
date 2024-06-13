@@ -62,10 +62,13 @@ if ($jarak_meter > $radius) { ?>
                 <div class="col-md-6">
                     <div class="card text-center">
                         <div class="card-body" style="margin: auto;">
+                            <input type="hidden" id="id" value="<?= $_SESSION['id'] ?>">
+                            <input type="hidden" id="tanggal_masuk" value="<?= $tanggal_masuk ?>">
+                            <input type="hidden" id="jam_masuk" value="<?= $jam_masuk ?>">
                             <div id="my_camera"></div>
                             <div id="my_result"></div>
                             <div><?= date('d F Y', strtotime($tanggal_masuk)) . '-' . $jam_masuk ?></div>
-                            <button class="btn btn-primary mt-2" id="ambil_foto">Masuk</button>
+                            <button class="btn btn-primary mt-2" id="ambil-foto">Masuk</button>
                         </div>
                     </div>
                 </div>
@@ -84,7 +87,10 @@ if ($jarak_meter > $radius) { ?>
         });
         Webcam.attach('#my_camera');
 
-        document.getElementById('ambil_foto').addEventListener('click', function() {
+        document.getElementById('ambil-foto').addEventListener('click', function() {
+            let id = document.getElementById('id').value;
+            let tanggal_masuk = document.getElementById('tanggal_masuk').value;
+            let jam_masuk = document.getElementById('jam_masuk').value;
             Webcam.snap(function(data_uri) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
@@ -96,7 +102,10 @@ if ($jarak_meter > $radius) { ?>
                 xhttp.open("POST", "presensi_masuk_aksi.php", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send(
-                    'photo=' + encodeURIComponent(data_uri)
+                    'photo=' + encodeURIComponent(data_uri) +
+                    '&id=' + id +
+                    '&tanggal_masuk=' + tanggal_masuk +
+                    '&jam_masuk=' + jam_masuk
                 );
             });
         });

@@ -76,10 +76,10 @@ while ($lokasi = mysqli_fetch_array($result)) {
                             <div id="detik_masuk"></div>
                         </div>
                         <form method="POST" action="<?= base_url('pegawai/presensi/presensi_masuk.php') ?>">
-                            <input type="text" name="latitude_kantor" value="<?= $latitude_kantor ?>">
-                            <input type="text" name="longitude_kantor" value="<?= $longitude_kantor ?>">
-                            <input type="text" name="latitude_pegawai" id="latitude_pegawai">
-                            <input type="text" name="longitude_pegawai" id="longitude_pegawai">
+                            <input type="hidden" name="latitude_kantor" value="<?= $latitude_kantor ?>">
+                            <input type="hidden" name="longitude_kantor" value="<?= $longitude_kantor ?>">
+                            <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                            <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
                             <input type="hidden" name="radius" value="<?= $radius ?>">
                             <input type="hidden" name="zona_waktu" value="<?= $zona_waktu ?>">
                             <input type="hidden" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
