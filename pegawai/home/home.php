@@ -11,7 +11,28 @@ if (!isset($_SESSION['login'])) {
     }
 }
 
-include('../../pegawai/layout/header.php') ?>
+include('../../pegawai/layout/header.php');
+include_once("../../config.php");
+
+$lokasi_presensi = $_SESSION['lokasi_presensi'];
+$result = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");
+
+while ($lokasi = mysqli_fetch_array($result)) {
+    $latitude_kantor = $lokasi['latitude'];
+    $longitude_kantor = $lokasi['longitude'];
+    $radius = $lokasi['radius'];
+    $zona_waktu = $lokasi['zona_waktu'];
+
+    if($zona_waktu == 'WIB') {
+       date_default_timezone_set('Asia/Jakarta');
+    } else if($zona_waktu == 'WITA') {
+        date_default_timezone_set('Asia/Makassar');
+    } else {
+        date_default_timezone_set('Asia/Jayapura');
+    }
+}
+
+?>
 
 <style>
     .parent-date {
@@ -54,8 +75,17 @@ include('../../pegawai/layout/header.php') ?>
                             <div>:</div>
                             <div id="detik_masuk"></div>
                         </div>
-                        <form action="">
-                            <button type="submit" class="btn btn-primary mt-3">Masuk</button>
+                        <form method="POST" action="<?= base_url('pegawai/presensi/presensi_masuk.php') ?>">
+                            <input type="text" name="latitude_kantor" value="<?= $latitude_kantor ?>">
+                            <input type="text" name="longitude_kantor" value="<?= $longitude_kantor ?>">
+                            <input type="text" name="latitude_pegawai" id="latitude_pegawai">
+                            <input type="text" name="longitude_pegawai" id="longitude_pegawai">
+                            <input type="hidden" name="radius" value="<?= $radius ?>">
+                            <input type="hidden" name="zona_waktu" value="<?= $zona_waktu ?>">
+                            <input type="hidden" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
+                            <input type="hidden" name="jam_masuk" value="<?= date('H:i:s') ?>">
+
+                            <button type="submit" name="tombol_masuk" class="btn btn-primary mt-3">Masuk</button>
                         </form>
                     </div>
                 </div>
@@ -64,7 +94,7 @@ include('../../pegawai/layout/header.php') ?>
                 <div class="card text-center">
                     <div class="card-header">Presensi Keluar</div>
                     <div class="card-body">
-                    <div class="parent-date">
+                        <div class="parent-date">
                             <div id="tanggal_keluar"></div>
                             <div class="ms-2"></div>
                             <div id="bulan_keluar"></div>
@@ -122,6 +152,7 @@ include('../../pegawai/layout/header.php') ?>
 
     //waktu keluar
     window.setTimeout("waktu_keluar()", 1000);
+
     function waktu_keluar() {
         var waktu = new Date();
         var tanggal = waktu.getDate();
@@ -143,6 +174,21 @@ include('../../pegawai/layout/header.php') ?>
             .innerHTML = detik;
 
         setTimeout("waktu_keluar()", 1000);
+    }
+
+    getLocation();
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+        $('#latitude_pegawai').val(position.coords.latitude);
+        $('#longitude_pegawai').val(position.coords.longitude);
     }
 </script>
 
