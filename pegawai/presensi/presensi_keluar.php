@@ -26,28 +26,16 @@ if (!isset($_SESSION['login'])) {
 include('../../pegawai/layout/header.php');
 include_once("../../config.php");
 
-
-
-if (isset($_POST['tombol_masuk'])) {
+if (isset($_POST['tombol-keluar'])) {
+    $id = $_POST['id'];
     $latitude_pegawai = $_POST['latitude_pegawai'];
     $longitude_pegawai = $_POST['longitude_pegawai'];
     $latitude_kantor = $_POST['latitude_kantor'];
     $longitude_kantor = $_POST['longitude_kantor'];
     $radius = $_POST['radius'];
     $zona_waktu = $_POST['zona_waktu'];
-    $tanggal_masuk = $_POST['tanggal_masuk'];
-    $jam_masuk = $_POST['jam_masuk'];
-}
-
-if(empty($latitude_pegawai) || empty($longitude_pegawai)){
-    $_SESSION['gagal'] = "Presensi gagal, GPS anda tidak aktif";
-    header('Location: ../home/home.php');
-    exit();
-}
-if(empty($latitude_kantor) || empty($longitude_kantor)){
-    $_SESSION['gagal'] = "Presensi gagal, lokasi kantor belum diatur";
-    header('Location: ../home/home.php');
-    exit();
+    $tanggal_keluar = $_POST['tanggal_keluar'];
+    $jam_keluar = $_POST['jam_keluar'];
 }
 
 // hervasine formula
@@ -86,13 +74,13 @@ if ($jarak_meter > $radius) { ?>
                 <div class="col-md-6">
                     <div class="card text-center">
                         <div class="card-body" style="margin: auto;">
-                            <input type="hidden" id="id" value="<?= $_SESSION['id'] ?>">
-                            <input type="hidden" id="tanggal_masuk" value="<?= $tanggal_masuk ?>">
-                            <input type="hidden" id="jam_masuk" value="<?= $jam_masuk ?>">
+                            <input type="hidden" id="id" value="<?= $id ?>">
+                            <input type="hidden" id="tanggal_keluar" value="<?= $tanggal_keluar ?>">
+                            <input type="hidden" id="jam_keluar" value="<?= $jam_keluar ?>">
                             <div id="my_camera"></div>
                             <div id="my_result"></div>
-                            <div><?= date('d F Y', strtotime($tanggal_masuk)) . '-' . $jam_masuk ?></div>
-                            <button class="btn btn-primary mt-2" id="ambil-foto">Masuk</button>
+                            <div><?= date('d F Y', strtotime($tanggal_keluar)) . '-' . $jam_keluar ?></div>
+                            <button class="btn btn-danger mt-2" id="ambil-foto">Keluar</button>
                         </div>
                     </div>
                 </div>
@@ -113,8 +101,8 @@ if ($jarak_meter > $radius) { ?>
 
         document.getElementById('ambil-foto').addEventListener('click', function() {
             let id = document.getElementById('id').value;
-            let tanggal_masuk = document.getElementById('tanggal_masuk').value;
-            let jam_masuk = document.getElementById('jam_masuk').value;
+            let tanggal_keluar = document.getElementById('tanggal_keluar').value;
+            let jam_keluar = document.getElementById('jam_keluar').value;
             Webcam.snap(function(data_uri) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
@@ -123,13 +111,13 @@ if ($jarak_meter > $radius) { ?>
                         window.location.href = '../home/home.php';
                     }
                 };
-                xhttp.open("POST", "presensi_masuk_aksi.php", true);
+                xhttp.open("POST", "presensi_keluar_aksi.php", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send(
                     'photo=' + encodeURIComponent(data_uri) +
                     '&id=' + id +
-                    '&tanggal_masuk=' + tanggal_masuk +
-                    '&jam_masuk=' + jam_masuk
+                    '&tanggal_keluar=' + tanggal_keluar +
+                    '&jam_keluar=' + jam_keluar
                 );
             });
         });
