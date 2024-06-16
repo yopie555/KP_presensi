@@ -34,7 +34,7 @@ if (empty($_GET['tanggal_dari'])) {
     <div class="container-xl">
         <div class="row">
             <div class="col-md-2">
-                <button type="button" class="btn btn-primary mb-3" data-bs-toogle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Export Excel
                 </button>
             </div>
@@ -99,7 +99,7 @@ if (empty($_GET['tanggal_dari'])) {
                     $timestamp_jam_masuk_real = strtotime($jam_masuk);
                     $timestamp_jam_masuk_kantor = strtotime($jam_masuk_kantor);
 
-                    $terlambat - $timestamp_jam_masuk_real - $timestamp_jam_masuk_kantor;
+                    $terlambat = $timestamp_jam_masuk_real - $timestamp_jam_masuk_kantor;
                     $total_jam_terlambat = floor($terlambat / 3600);
                     $terlambat -= $total_jam_terlambat * 3600;
                     $selisih_menit_terlambat = floor($terlambat / 60);
@@ -115,7 +115,7 @@ if (empty($_GET['tanggal_dari'])) {
                             <?php if ($rekap['tanggal_keluar'] == '0000-00-00') : ?>
                                 <span>0 Jam 0 Menit</span>
                             <?php else : ?>
-                                <?= $total_jam_kerja . ' Jam ' . $selisih_menit_terlambat . ' Menit ' ?>
+                                <?= $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit ' ?>
                             <?php endif; ?>
                         </td>
                         <td class="text-center">
@@ -134,19 +134,19 @@ if (empty($_GET['tanggal_dari'])) {
     </div>
 </div>
 
-<div class="modal" id="exampleModal" tabindex="1">
-    <div class="modal-dialog">
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Export Excel</h5>
+                <h5 class="modal-title">Modal title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
-                <form action="export_excel.php" method="post">
-                    <input type="hidden" name="tanggal" value="<?= $tanggal ?>">
-                    <button type="submit" class="btn btn-primary">Export Excel</button>
-                </form>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
