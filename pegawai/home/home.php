@@ -84,14 +84,14 @@ while ($lokasi = mysqli_fetch_array($result)) {
                                 <div id="detik_masuk"></div>
                             </div>
                             <form method="POST" action="<?= base_url('pegawai/presensi/presensi_masuk.php') ?>">
-                                <input type="" name="latitude_kantor" value="<?= $latitude_kantor ?>">
-                                <input type="" name="longitude_kantor" value="<?= $longitude_kantor ?>">
-                                <input type="" name="latitude_pegawai" id="latitude_pegawai">
-                                <input type="" name="longitude_pegawai" id="longitude_pegawai">
-                                <input type="" name="radius" value="<?= $radius ?>">
-                                <input type="" name="zona_waktu" value="<?= $zona_waktu ?>">
-                                <input type="" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
-                                <input type="" name="jam_masuk" value="<?= date('H:i:s') ?>">
+                                <input type="hidden" name="latitude_kantor" value="<?= $latitude_kantor ?>">
+                                <input type="hidden" name="longitude_kantor" value="<?= $longitude_kantor ?>">
+                                <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                                <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
+                                <input type="hidden" name="radius" value="<?= $radius ?>">
+                                <input type="hidden" name="zona_waktu" value="<?= $zona_waktu ?>">
+                                <input type="hidden" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
+                                <input type="hidden" name="jam_masuk" value="<?= date('H:i:s') ?>">
 
                                 <button type="submit" name="tombol_masuk" class="btn btn-primary mt-3">Masuk</button>
                             </form>
@@ -141,15 +141,15 @@ while ($lokasi = mysqli_fetch_array($result)) {
                                             <div id="detik_keluar"></div>
                                         </div>
                                         <form method="post" action="<?= base_url('pegawai/presensi/presensi_keluar.php')  ?>">
-                                            <input type="" name="id" value="<?= $cek_presensi_keluar['id'] ?>">
-                                            <input type="" name="latitude_kantor" value="<?= $latitude_kantor ?>">
-                                            <input type="" name="longitude_kantor" value="<?= $longitude_kantor ?>">
-                                            <input type="" name="latitude_pegawai" id="latitude_pegawai">
-                                            <input type="" name="longitude_pegawai" id="longitude_pegawai">
-                                            <input type="" name="radius" value="<?= $radius ?>">
-                                            <input type="" name="zona_waktu" value="<?= $zona_waktu ?>">
-                                            <input type="" name="tanggal_keluar" value="<?= date('Y-m-d') ?>">
-                                            <input type="" name="jam_keluar" value="<?= date('H:i:s') ?>">
+                                            <input type="hidden" name="id" value="<?= $cek_presensi_keluar['id'] ?>">
+                                            <input type="hidden" name="latitude_kantor" value="<?= $latitude_kantor ?>">
+                                            <input type="hidden" name="longitude_kantor" value="<?= $longitude_kantor ?>">
+                                            <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                                            <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
+                                            <input type="hidden" name="radius" value="<?= $radius ?>">
+                                            <input type="hidden" name="zona_waktu" value="<?= $zona_waktu ?>">
+                                            <input type="hidden" name="tanggal_keluar" value="<?= date('Y-m-d') ?>">
+                                            <input type="hidden" name="jam_keluar" value="<?= date('H:i:s') ?>">
 
                                             <button name="tombol-keluar" type="submit" class="btn btn-danger mt-3">Keluar</button>
                                         </form>
