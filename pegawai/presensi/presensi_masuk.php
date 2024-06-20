@@ -23,6 +23,7 @@ if (!isset($_SESSION['login'])) {
     }
 }
 
+$judul = "Presensi Masuk";
 include('../../pegawai/layout/header.php');
 include_once("../../config.php");
 

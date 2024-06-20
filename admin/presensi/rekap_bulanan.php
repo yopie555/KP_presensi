@@ -32,8 +32,8 @@ if (empty($_GET['filter_bulan'])) {
 <div class="page-body">
     <div class="container-xl">
         <div class="row">
-            <div class="col-md-2">
-                <button type="button" class="btn btn-primary mb-3" data-bs-toogle="modal" data-bs-target="#exampleModal">
+        <div class="col-md-2">
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Export Excel
                 </button>
             </div>
@@ -159,17 +159,18 @@ if (empty($_GET['filter_bulan'])) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal Title</h5>
+                <h5 class="modal-title">Modal title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
-                lorem ipsum
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Export</button>
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
 </div>
+
+<?php include('../../pegawai/layout/footer.php') ?>

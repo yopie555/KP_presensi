@@ -11,11 +11,21 @@ if (!isset($_SESSION['login'])) {
     }
 }
 
+$judul = "Rekap Presensi";
 include('../../pegawai/layout/header.php');
 include_once("../../config.php");
 
-$id = $_SESSION['id'];
-$result = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id' ORDER BY tanggal_masuk DESC");
+if(empty($_GET['tanggal_dari'])){
+    $id = $_SESSION['id'];
+    $result = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id' ORDER BY tanggal_masuk DESC");
+}else{
+    $tanggal_dari = $_GET['tanggal_dari'];
+    $tanggal_sampai = $_GET['tanggal_sampai'];
+    $id = $_SESSION['id']; 
+    $result = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id' AND tanggal_masuk BETWEEN '$tanggal_dari' AND '$tanggal_sampai' ORDER BY tanggal_masuk DESC");
+}
+
+
 $lokasi_presensi = $_SESSION['lokasi_presensi'];
 $lokasi = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi= '$lokasi_presensi'");
 
@@ -26,6 +36,25 @@ endwhile;
 
 <div class="page-body">
     <div class="container-xl">
+
+        <div class="row">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Exoport Excel
+                </button>
+            </div>
+
+            <div class="col-md-10">
+                <form method="get">
+                    <div class="input-group">
+                        <input type="date" class="form-control" name="tanggal_dari">
+                        <input type="date" class="form-control" name="tanggal_sampai">
+                        <button class="btn btn-primary" type="submit">Tampilkan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <table class="table table-bordered">
             <tr class="text-center">
                 <th>No.</th>
@@ -35,6 +64,12 @@ endwhile;
                 <th>Total Jam</th>
                 <th>Total Terlambat</th>
             </tr>
+
+            <?php if(mysqli_num_rows($result) == 0 ){ ?>
+                <tr>
+                    <td colspan="6" class="text-center">Data Rekap Presensi tidak ditemukan</td>
+                </tr>
+                <?php }else{ ?>
 
             <?php
             $no = 1;
@@ -68,10 +103,10 @@ endwhile;
                     <td><?= $rekap['jam_masuk']; ?></td>
                     <td><?= $rekap['jam_keluar']; ?></td>
                     <td>
-                        <?php if($rekap['tanggal_keluar'] == '0000-00-00') : ?>
+                        <?php if ($rekap['tanggal_keluar'] == '0000-00-00') : ?>
                             <span>0 jam 0 menit</span>
                         <?php else : ?>
-                        <?= $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit' ?>
+                            <?= $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit' ?>
                         <?php endif; ?>
                     </td>
                     <td>
@@ -86,6 +121,27 @@ endwhile;
                 </tr>
 
             <?php endwhile; ?>
+        <?php } ?>
         </table>
     </div>
 </div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php include('../../pegawai/layout/footer.php') ?>
