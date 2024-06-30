@@ -32,7 +32,7 @@ if (empty($_GET['filter_bulan'])) {
 <div class="page-body">
     <div class="container-xl">
         <div class="row">
-        <div class="col-md-2">
+            <div class="col-md-2">
                 <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Export Excel
                 </button>
@@ -41,22 +41,22 @@ if (empty($_GET['filter_bulan'])) {
             <div class="col-md-10">
                 <form method="get">
                     <div class="input-group">
-                      <select name="filter_bulan" class="form-control">
-                          <option value="">==Pilih Bulan==</option>
-                          <option value="01">Januari</option>
-                          <option value="02">Februari</option>
-                        <option value="03">Maret</option>
-                        <option value="04">April</option>
-                        <option value="05">Mei</option>
-                        <option value="06">Juni</option>
-                        <option value="07">Juli</option>
-                        <option value="08">Agustus</option>
-                        <option value="09">September</option>
-                        <option value="10">Oktober</option>
-                        <option value="11">November</option>
-                        <option value="12">Desember</option>
-                      </select>
-                      <select name="filter_tahun" class="form-control">
+                        <select name="filter_bulan" class="form-control">
+                            <option value="">==Pilih Bulan==</option>
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                        <select name="filter_tahun" class="form-control">
                             <option value="">==Pilih Tahun==</option>
                             <?php
                             $tahun = date('Y');
@@ -64,7 +64,7 @@ if (empty($_GET['filter_bulan'])) {
                                 echo '<option value="' . $i . '">' . $i . '</option>';
                             }
                             ?>
-                      </select>
+                        </select>
                         <button type="submit" class="btn btn-primary">Tampilkan</button>
                     </div>
                 </form>
@@ -76,7 +76,7 @@ if (empty($_GET['filter_bulan'])) {
         <?php else : ?>
             <span>Rekap Presensi Tanggal: <?= date('d F Y', strtotime($_GET['tanggal_dari'])) ?> s/d <?= date('d F Y', strtotime($_GET['tanggal_sampai'])) ?></span>
         <?php endif; ?> -->
-        <span>Rekap Presensi Bulan: <?= date('F Y', strtotime($bulan))?></span>
+        <span>Rekap Presensi Bulan: <?= date('F Y', strtotime($bulan)) ?></span>
         <table class="table table-bordered mt-2">
             <tr class="text-center">
                 <th>No.</th>
@@ -159,16 +159,47 @@ if (empty($_GET['filter_bulan'])) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Rekap Excel Presensi Bulanan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-            </div>
+            <form method="post" action="<?= base_url('admin/presensi/rekap_bulanan_excel.php') ?>">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for=" ">Bulan</label>
+                        <select name="filter_bulan" class="form-control">
+                            <option value="">==Pilih Bulan==</option>
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for=" ">Tahun</label>
+                        <select name="filter_tahun" class="form-control" id="">
+                            <option value="">==Pilih Tahun==</option>
+                            <?php
+                            $tahun = date('Y');
+                            for ($i = 2022; $i <= $tahun; $i++) {
+                                echo '<option value="' . $i . '">' . $i . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Export</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

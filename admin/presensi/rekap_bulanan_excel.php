@@ -11,16 +11,15 @@ if (!isset($_SESSION['login'])) {
 
 require_once('../../config.php');
 
-$tanggal_dari = $_POST['tanggal_dari'];
-$tanggal_sampai = $_POST['tanggal_sampai'];
-$result = mysqli_query($connection, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi, pegawai.nip FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE tanggal_masuk BETWEEN '$tanggal_dari' AND '$tanggal_sampai' ORDER BY tanggal_masuk DESC limit 10") or die(mysqli_error($connection));
+$filter_tahun_bulan = $_POST['filter_tahun'] . '-' . $_POST['filter_bulan'];
+$result = mysqli_query($connection, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi, pegawai.nip  FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE DATE_FORMAT(tanggal_masuk, '%Y-%m') = '$filter_tahun_bulan' ORDER BY tanggal_masuk DESC") or die(mysqli_error($connection));
 
-$file = "Rekap Presensi Harian.xls";
+$file = "Rekap Presensi Bulanan.xls";
 
 $test = "<table border='1'>
-<span class='text-center'> Rekap Presensi Harian </span>
+<span class='text-center'> Rekap Presensi Bulanan </span>
 <br>
-<span>Rekap Presensi Tanggal: " . date('d F Y', strtotime($tanggal_dari)) . " s/d " . date('d F Y', strtotime($tanggal_sampai)) . "</span>
+<span> Bulan: " . $_POST['filter_bulan'] . " Tahun: " . $_POST['filter_tahun'] . "</span>
 <tr class='text-center'>
 <th>NO</th>
 <th>NAMA</th>
