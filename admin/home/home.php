@@ -12,6 +12,19 @@ $judul_halaman = "Home";
 include('../../admin/layout/header.php');
 $pegawai = mysqli_query($connection, "SELECT pegawai.*, users.status FROM pegawai JOIN users ON pegawai.id = users.id_pegawai WHERE status = 'aktif' ");
 $total_pegawai_aktif = mysqli_num_rows($pegawai);
+
+$tanggal = date('Y-m-d');
+$hadir = mysqli_query($connection, "SELECT presensi.* FROM pegawai JOIN presensi ON pegawai.id = users.id_pegawai WHERE tanggal_masuk = '$tanggal'");
+var_dump(mysqli_fetch_array($hadir));
+exit();
+$total_hadir = mysqli_num_rows($hadir);
+
+$alpa = mysqli_query($connection, "SELECT * FROM presensi WHERE jam_masuk IS NULL AND jam_keluar IS NULL");
+$total_alpa = mysqli_num_rows($alpa);
+
+$ketidakhadiran = mysqli_query($connection, "SELECT * FROM ketidakhadiran WHERE status_pengajuan = 'DISETUJUI'");
+$total_ketidakhadiran = mysqli_num_rows($ketidakhadiran);
+
 ?>
 <!-- Page body -->
 <div class="page-body">
@@ -63,7 +76,7 @@ $total_pegawai_aktif = mysqli_num_rows($pegawai);
                                             Pegawai Hadir
                                         </div>
                                         <div class="text-muted">
-                                            0 Pegawai
+                                            <?= $total_hadir; ?> Pegawai
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +102,7 @@ $total_pegawai_aktif = mysqli_num_rows($pegawai);
                                             Jumlah Alpa
                                         </div>
                                         <div class="text-muted">
-                                            0 Pegawai
+                                            <?= $total_alpa; ?> Pegawai
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +128,7 @@ $total_pegawai_aktif = mysqli_num_rows($pegawai);
                                             Jumlah Sakit, Ijin & Cuti
                                         </div>
                                         <div class="text-muted">
-                                            0 Pegawai
+                                            <?= $total_ketidakhadiran; ?> Pegawai
                                         </div>
                                     </div>
                                 </div>
