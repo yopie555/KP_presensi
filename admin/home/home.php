@@ -14,15 +14,31 @@ $pegawai = mysqli_query($connection, "SELECT pegawai.*, users.status FROM pegawa
 $total_pegawai_aktif = mysqli_num_rows($pegawai);
 
 $tanggal = date('Y-m-d');
-$hadir = mysqli_query($connection, "SELECT presensi.* FROM pegawai JOIN presensi ON pegawai.id = users.id_pegawai WHERE tanggal_masuk = '$tanggal'");
-var_dump(mysqli_fetch_array($hadir));
-exit();
+$hadir = mysqli_query($connection, "SELECT id_pegawai, COUNT(id) AS jumlah_kehadiran FROM presensi WHERE tanggal_masuk = '$tanggal' GROUP BY id_pegawai;");
 $total_hadir = mysqli_num_rows($hadir);
 
-$alpa = mysqli_query($connection, "SELECT * FROM presensi WHERE jam_masuk IS NULL AND jam_keluar IS NULL");
+$alpa = mysqli_query($connection, "
+   SELECT
+    u.*,
+    COALESCE(temp.jumlah, 0) AS jumlah_kehadiran 
+    FROM users AS u 
+    LEFT JOIN (
+        SELECT 
+            id_pegawai,
+            COUNT(id) AS jumlah
+        FROM presensi 
+        WHERE tanggal_masuk='$tanggal'
+        GROUP BY id_pegawai
+    ) AS temp 
+    ON u.id=temp.id_pegawai
+    WHERE u.role='pegawai' AND u.status='Aktif' AND COALESCE(temp.jumlah, 0) = 0;
+");
 $total_alpa = mysqli_num_rows($alpa);
 
-$ketidakhadiran = mysqli_query($connection, "SELECT * FROM ketidakhadiran WHERE status_pengajuan = 'DISETUJUI'");
+$ketidakhadiran = mysqli_query($connection, "
+   SELECT * FROM `ketidakhadiran` WHERE `tanggal` = '2024-07-05' AND status_pengajuan = 'DISETUJUI';
+");
+
 $total_ketidakhadiran = mysqli_num_rows($ketidakhadiran);
 
 ?>
